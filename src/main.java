@@ -8,5 +8,6 @@ public class main {
         System.out.println("What would you like to do?\n");
         System.out.println("Brian");
         System.out.println("David");
+        System.out.println("Johnson");
     }
 }
