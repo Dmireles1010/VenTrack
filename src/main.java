@@ -6,5 +6,6 @@ public class main {
         System.out.println("Login SUCCESSFUL");
         System.out.println("Welcome to the Vending Machine Portal");
         System.out.println("What would you like to do?\n");
+        System.out.println("Brian");
     }
 }
