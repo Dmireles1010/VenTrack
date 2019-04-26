@@ -1,0 +1,27 @@
+			Vending Machine 2
+Key	Item				Quantity	Price
+A1	Doritos Cool Ranch		5		1.29
+A2	Doritos Nacho Cheese		5		1.29
+A3	Ruffles Original		3		1.29
+A4	Funyuns				1		1.49
+B1	Cheez-It Chedder		4		1.29
+B2	Lays Sour Cream & Onion		3		1.49
+B3	Lays Kettle Cooked		4		1.29
+B4	Pringles Original		4		1.29
+C1	Pringles Sour Cream & Onion	7		1.29
+C2	Takis				1		1.29
+C3	Goldfish Chedder		8		0.99
+C4	Chex Mix			7		0.99
+D1	Chips Ahoy!			4		1.09
+D2	Oreos				6		1.09
+D3	3 Musketeers			9		0.99
+D4	Welch's Fruit Snacks		3		0.99
+E1	M&M's				5		0.99
+E2	Nature Valley			9		0.99		
+E3	Snickers			6		0.99
+E4	Twix				5		0.99		
+F1	Hersheys Chocolate		4		0.99
+F2	Rice Crispies Treats		5		0.89
+F3	Pop Tarts Strawberry		5		0.89
+F4	KitKat				5		1.99
+	
