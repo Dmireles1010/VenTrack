@@ -698,7 +698,7 @@ public class Database {
 
         }
         catch(SQLException e){
-            System.out.println("Error 11");
+
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
         }
