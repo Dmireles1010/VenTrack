@@ -878,14 +878,13 @@ public class Database {
      */
     public static void modifyItems(Connection con) {
         try {
-
             Scanner input = new Scanner(System.in);
-
+            System.out.print("Enter vending machine ID:");
+            int vmID = input.nextInt();
+            Database.showItems(con, vmID);
             String query = "update ITEM set PRICE = ? where ITEM_ID = ? AND VENDING_MACHINE_ID=?";
             System.out.print("Enter Item ID: ");
             String itemID = input.next();
-            System.out.print("Enter vending machine ID:");
-            int vmID = input.nextInt();
             String check = "SELECT * FROM ITEM WHERE ITEM_ID = ? AND VENDING_MACHINE_ID = ?";
             PreparedStatement ps = con.prepareStatement(check);
             ps.setString(1, itemID);
@@ -902,7 +901,7 @@ public class Database {
                 ps .setInt(2, vmID);
                 rs = ps .executeQuery();
             }
-            System.out.print("Enter price: ");
+            System.out.print("Enter new price: ");
             double price = input.nextDouble();
 
             ps = con.prepareStatement(query);
@@ -930,14 +929,14 @@ public class Database {
             ps.executeUpdate();
 
             query = "update ITEM set QUANTITY = ? where ITEM_ID = ? AND VENDING_MACHINE_ID=?";
-            System.out.println("Enter new quantity: ");
+            System.out.print("Enter new quantity: ");
             int quantity = input.nextInt();
             ps = con.prepareStatement(query);
             ps.setInt(1, quantity);
             ps.setString(2, itemID);
             ps.setInt(3, vmID);
             ps.executeUpdate();
-
+            Database.showItems(con, vmID);
             System.out.println("Update Done");
 
         }
