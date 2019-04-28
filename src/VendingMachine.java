@@ -11,11 +11,14 @@ public class VendingMachine {
 
     public static void main(String[] args) {
         Connection con=null;
-        Integer vmID=null;
         //Connect to database:
+        //TODO loop
         try {
             con=Database.getRemoteConnection();
-            vmID=1;
+
+            System.out.print("Enter which Vending Machine you are at: ");
+            int vmID = input.nextInt();
+            //TODO input validate
 
             Database.showItems(con,vmID);
 
