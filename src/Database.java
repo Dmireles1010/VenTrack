@@ -398,13 +398,20 @@ public class Database {
             String query = "update VENDING_MACHINE set TOTAL_MONEY = ? where VENDING_MACHINE_ID=?";
             PreparedStatement preparedStmt = con.prepareStatement(query);
 
-            Double originalTotal=getTotal(con,vmID);
+//            Double originalTotal=getTotal(con,vmID);
+
+            Double originalTotal=Double.parseDouble(String.format("%.2f", getTotal(con,vmID)));
+            
+//            System.out.println(originalTotal);
+            
             //Decrease Quant by 1
             //TODO: if quant is less than 0 dont decrease
 
             Double newTotal=originalTotal+amount;
-
-            preparedStmt.setDouble(1,newTotal);
+            
+            Double newTotalFormatted=Double.parseDouble(String.format("%.2f", newTotal));
+//            System.out.println(newTotalFormatted);
+            preparedStmt.setDouble(1,newTotalFormatted);
             //ID
             preparedStmt.setInt(2,vmID);
 

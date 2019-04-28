@@ -16,18 +16,14 @@ public class VendingMachine {
         try {
             con=Database.getRemoteConnection();
             vmID=1;
-            
 
-            
             System.out.print("Enter the code correlating to the item you want: ");
             String choice = input.next();
 
 //            Item item = null;
             String itemID=null;
             String inputValidate = "False";
-
-            
-            
+ 
             while(inputValidate == "False") {
                 itemID=choice;
                 boolean itemExist=Database.getBoolExist(con, choice, vmID);
@@ -44,8 +40,6 @@ public class VendingMachine {
                     }
                 }
             }
-
-
 
             String itemName = Database.getItemName(con, itemID, vmID);
 
