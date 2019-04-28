@@ -50,7 +50,14 @@ public class App {
                 //  TODO:   View Statistics for a specific Vending Machine
                 break;
             case 3:
-                //  
+                //  TODO:   List Number of Items for specific Vending Machine
+                break;
+            case 4:
+                //  TODO:   Modify specific Vending Machine Items
+                break;
+            case 5:
+                //  TODO:   View past Stats from Specific Vending Machine
+                break;
             case 6:
                 //  Exit the program
                 logout();
@@ -60,42 +67,18 @@ public class App {
         }
     }
 
-    private static void vending_machine_menu(int machine_id) {
-        System.out.println("\t-   CONNECTED TO VENDING MACHINE " + machine_id + "   -");
-        System.out.println("What would you like to do with this vending machine");
-        System.out.println("1. Check Statistics\n" +
-                "2. Check Inventory\n" +
-                "3. Modify Vending Machine Items\n" +
-                "4. Go Back to the main menu\n");
-        System.out.println("Please enter your choice: ");
+    private static void vending_machine_menu() {
+        System.out.println("Select which Vending Machine to connect to");
+        System.out.println("print list of vending machine");
+        System.out.print("Please enter your choice: ");
         int vm_choice = input.nextInt();
 
         //  Input Validation for vending machine menu
         //  TODO:   Input Validation if user inputs string
-        while (0 > vm_choice || vm_choice > 4) {
-            System.out.println("Please reenter your choice: ");
-            vm_choice = input.nextInt();
-        }
 
-        switch (vm_choice) {
-            case 1:
-                System.out.println("Displaying Statistics");
-                //  TODO:   Display Vending Machine Stats
-                break;
-            case 2:
-                System.out.println("Displaying the inventory");
-                //  TODO:   Display the inventory
-                break;
-            case 3:
-                System.out.println("Which item would you like to modify");
-                //  TODO:   Modify the inventory
-                break;
-            case 4:
-                System.out.println("Going back to the main menu...");
-                menu();
-            default:
-                throw new IllegalStateException("Unexpected value: " + vm_choice);
-        }
+        //System.out.println("\t-   CONNECTED TO VENDING MACHINE " + machine_id + "   -");
+
+        //return vm;
     }
 
     private static void logout() {
