@@ -55,6 +55,7 @@ public class App {
             }
 
             switch (choice) {
+                // Menu choices
                 case 1:
                     System.out.println("Displaying overall Vending Machine Stats");
                     //  TODO:   View overall Vending Machine Stats
