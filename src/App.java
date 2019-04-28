@@ -1,4 +1,7 @@
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -6,24 +9,30 @@ public class App {
     public static final Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("Please login with your credentials to proceed");
 
+        Connection con = Database.getRemoteConnection();
+        System.out.println("Please login with your credentials to proceed");
         System.out.print("Enter your username: ");
         String username = input.nextLine();
-
-        //  TODO:   Login System (Censor Password on input)
         System.out.print("Password: ");
         String password = input.nextLine();
-
-        //  TODO:   Login Verification / Input Validation
-        System.out.println("    -   Login SUCCESSFUL   -\n");
-        System.out.println();
-        System.out.println("Welcome to the Vending Machine Portal");
-
+        boolean accept = Database.getBoolAccount(con, username, password);
+        while (!accept){
+            System.out.print("\nERROR: Your username and / or password is incorrect\n" +
+                            "Enter your username: ");
+            username = input.nextLine();
+            System.out.print("Password: ");
+            password = input.nextLine();
+            accept = Database.getBoolAccount(con, username, password);
+        }
+        System.out.println("Login successful!\n");
+        login();
         menu();
+
     }
 
     private static void menu() {
+        Connection con = Database.getRemoteConnection();
         boolean keepGoing = true;
         while(keepGoing) {
             System.out.println("------------------------------------------------------------");
@@ -61,6 +70,13 @@ public class App {
                     break;
                 case 5:
                     //  TODO:   View past Stats from Specific Vending Machine
+                    System.out.print("Enter vending machine ID: ");
+                    int vmID = input.nextInt();
+                    System.out.print("Input start date 'yyyy-MM-dd': ");
+                    String startDate = input.nextLine();
+                    System.out.print("Input end date 'yyyy-MM-dd': ");
+                    String endDate = input.nextLine();
+                    Database.showItemsByDate(con, vmID, startDate, endDate);
                     break;
                 case 6:
                     //  Exit the program
@@ -89,6 +105,9 @@ public class App {
 
     private static void logout() {
         System.out.println("\t-   Logging Off   -");
+    }
+    private static void login() {
+        System.out.println("\t-   Logging In   -\n");
     }
     public static void viewOverallStats(ArrayList<Integer> vmIDs){
         Connection con=Database.getRemoteConnection();
