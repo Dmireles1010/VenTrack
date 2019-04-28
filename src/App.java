@@ -10,6 +10,8 @@ import java.util.Scanner;
 
 public class App {
     public static final Scanner input = new Scanner(System.in);
+    public static Connection con = Database.getRemoteConnection();
+    public static User currentUser=new User();
     final static String DATE_FORMAT = "yyyy-MM-dd";
     public static void main(String[] args) {
 
@@ -20,6 +22,7 @@ public class App {
         System.out.print("Password: ");
         String password = input.nextLine();
         boolean accept = Database.getBoolAccount(con, username, password);
+        currentUser.setUserName(username);
         while (!accept){
             System.out.print("\nERROR: Your username and / or password is incorrect\n" +
                             "Enter your username: ");
@@ -27,6 +30,7 @@ public class App {
             System.out.print("Password: ");
             password = input.nextLine();
             accept = Database.getBoolAccount(con, username, password);
+            currentUser.setUserName(username);
         }
         login();
         menu();
@@ -34,7 +38,7 @@ public class App {
     }
 
     private static void menu() {
-        Connection con = Database.getRemoteConnection();
+
         boolean keepGoing = true;
         while(keepGoing) {
             System.out.println("------------------------------------------------------------");
@@ -55,26 +59,49 @@ public class App {
                 System.out.println("Please reenter your choice: ");
                 choice = input.nextInt();
             }
-
+            ArrayList<Integer> vmIDs=Database.getVMs(con,currentUser.getUserName());
+            Integer id=null;
             switch (choice) {
                 // Menu choices
                 case 1:
                     System.out.println("Displaying overall Vending Machine Stats");
                     //  TODO:   View overall Vending Machine Stats
-                    ArrayList<Integer> temp=new ArrayList<Integer>();
-                    temp.add(1);
-                    temp.add(2);
-                    viewOverallStats(temp);
+                    viewOverallStats(vmIDs);
                     break;
                 case 2:
                     //  TODO:   View Statistics for a specific Vending Machine
+                    System.out.println("Your Vending Machines IDs:");
+                    for(Integer vm:vmIDs){
+                        System.out.println("Vending Machine ID: "+vm);
+                    }
+                    System.out.print("Enter vending machine ID: ");
+                    id = input.nextInt();
+                    while(!vmIDs.contains(id)){
+                        System.out.println("Invalid Vending Machine number... Enter a valid vending machine ID:");
+                        id = input.nextInt();
+                    }
+                    Database.showItemsStatsSpecific(con,id);
                     break;
                 case 3:
                     //  TODO:   List Number of Items for specific Vending Machine
+
+                    System.out.println("Your Vending Machines IDs:");
+                    for(Integer vm:vmIDs){
+                        System.out.println("Vending Machine ID: "+vm);
+                    }
+
+                    System.out.print("Enter vending machine ID: ");
+                    id = input.nextInt();
+                    while(!vmIDs.contains(id)){
+                        System.out.println("Invalid Vending Machine number... Enter a valid vending machine ID:");
+                        id = input.nextInt();
+                    }
+
+                    Database.showItemsSpecific(con,id);
                     break;
                 case 4:
                     //  TODO:   Modify specific Vending Machine Items
-                    Database.modifyItems();
+                    Database.modifyItems(con);
                     break;
 
                 case 5:
@@ -145,7 +172,6 @@ public class App {
         }
     }
     public static void viewOverallStats(ArrayList<Integer> vmIDs){
-        Connection con=Database.getRemoteConnection();
         Double total=0.0;
         Integer totalNumItems=0;
 
@@ -158,12 +184,10 @@ public class App {
             totalNumItems+=Database.getTotalItems(con,vmID);
         }
 
-        System.out.println("Total amount of money in all vending machine: "+total);
+        System.out.format("Total amount of money in all vending machine: $%.2f %n",total);
         System.out.println("Number of items sold in all vending machines: "+totalNumItems);
         Database.showItemsStats(con,vmIDs);
-//        for(int x=0;x<2;x++){
-//            System.out.format("Vending Machine #%d: ",x);
-//            System.out.format("moneyhere");
+        ;
         System.out.println();
 //        }
 
