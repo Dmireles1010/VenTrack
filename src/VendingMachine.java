@@ -1,7 +1,8 @@
-import java.util.Scanner;
 import java.lang.String;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -9,37 +10,15 @@ public class VendingMachine {
     public static final Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
-//        Map<String, Item> itemMap = new HashMap<String, Item>();
-//
-//        addItem(itemMap);
-//        printItem(itemMap);
-
-
-        //getting price
-        //System.out.println(getPrice( con, "F4", 1));
-
-        //when updating an item quantity by -1
-        //updateAmount(con,"F4",1);
-
-        //when updating the quantity
-//        updateQuantity( con, "F4", 1, 3);
-
-        //when buying item
-//        Date date=new Date();
-//        buyItem( con, "A2", 1, new java.sql.Date(date.getTime()),getRecentPurchase(con),getPrice( con, "A2", 1));
-
-//        System.out.println( getRecentPurchase( con));
-
-
-
-
         Connection con=null;
         Integer vmID=null;
         //Connect to database:
         try {
             con=Database.getRemoteConnection();
             vmID=1;
+            
 
+            
             System.out.print("Enter the code correlating to the item you want: ");
             String choice = input.next();
 
@@ -47,6 +26,8 @@ public class VendingMachine {
             String itemID=null;
             String inputValidate = "False";
 
+            
+            
             while(inputValidate == "False") {
                 itemID=choice;
                 boolean itemExist=Database.getBoolExist(con, choice, vmID);
@@ -96,7 +77,12 @@ public class VendingMachine {
 //                item.quantity = item.quantity-1;
 //                itemMap.replace(choice, item);
 //                total += cost;
+                //Update total in vending machine
                 Database.incTotal(con, vmID, cost);
+                //Add item to purchase history
+                Date date=new Date();
+                Database.buyItem( con, itemID, vmID, new java.sql.Date(date.getTime()),Database.getRecentPurchase(con),Database.getPrice( con, itemID, vmID));
+                
             }
 //            printItem(itemMap);
             con.close();
@@ -105,11 +91,6 @@ public class VendingMachine {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
         }
-
-
-
-
-
 
 
 
