@@ -59,6 +59,10 @@ public class App {
                 case 1:
                     System.out.println("Displaying overall Vending Machine Stats");
                     //  TODO:   View overall Vending Machine Stats
+                    ArrayList<Integer> temp=new ArrayList<Integer>();
+                    temp.add(1);
+                    temp.add(2);
+                    viewOverallStats(temp);
                     break;
                 case 2:
                     //  TODO:   View Statistics for a specific Vending Machine

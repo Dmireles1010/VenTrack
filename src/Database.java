@@ -535,10 +535,10 @@ public class Database {
      * **/
     public static boolean getBoolAccount(Connection con, String username, String password){
         try{
-            String query = "SELECT * FROM USER WHERE USERNAME= ? and PASSWORD=? ";
+            String query = "SELECT * FROM USER WHERE USER_NAME= ? and PASSWORD=? ";
             PreparedStatement preparedStmt=con.prepareStatement(query);
             preparedStmt.setString(1,username);
-            preparedStmt.setString(1,password);
+            preparedStmt.setString(2,password);
 
 
             ResultSet rs= preparedStmt.executeQuery();
@@ -618,6 +618,94 @@ public class Database {
         return 0;
     }
 
+    public static void showItemsStats(Connection con, ArrayList<Integer> vmIDs){
 
+        try{
+            //loop through each vmID
+
+            ArrayList<String> newNames=new ArrayList<String>();
+            ArrayList<Double> newTotal=new ArrayList<Double>();
+            ArrayList<Integer> newAmount=new ArrayList<Integer>();
+
+            for(int i=0;i<vmIDs.size();i++){
+                ArrayList<String> names=new ArrayList<String>();
+                ArrayList<String> itemIDs=new ArrayList<String>();
+                ArrayList<Double> totals=new ArrayList<Double>();
+
+                String query = "select * from PURCHASE where VENDING_MACHINE_ID=?";
+                PreparedStatement preparedStmt = con.prepareStatement(query);
+                preparedStmt.setInt(1,vmIDs.get(i));
+
+                ResultSet rs= preparedStmt.executeQuery();
+                while (rs.next())
+                {
+                    itemIDs.add(rs.getString("ITEM_ID"));
+                }
+
+                for(int x=0;x<itemIDs.size();x++){
+                    String query2 = "select * from ITEM where VENDING_MACHINE_ID=? and ITEM_ID=?";
+                    preparedStmt = con.prepareStatement(query2);
+                    preparedStmt.setInt(1,vmIDs.get(i));
+                    preparedStmt.setString(2, itemIDs.get(x));
+                    rs= preparedStmt.executeQuery();
+
+                    while (rs.next())
+                    {
+                        names.add(rs.getString("NAME"));
+                    }
+                }
+                for(int z=0;z<names.size();z++){
+                    String query3 = "select * from PURCHASE where VENDING_MACHINE_ID=? and ITEM_ID=?";
+                    preparedStmt = con.prepareStatement(query3);
+                    preparedStmt.setInt(1,vmIDs.get(i));
+                    preparedStmt.setString(2, itemIDs.get(z));
+                    rs= preparedStmt.executeQuery();
+                    while (rs.next())
+                    {
+                        totals.add(rs.getDouble("PRICE"));
+                    }
+                }
+
+
+                for(int j=0;j<names.size();j++){
+                    if(!newNames.contains(names.get(j))){
+                        newNames.add(names.get(j));
+                        newTotal.add(0.0);
+                        newAmount.add(0);
+                    }
+                }
+//                System.out.println(newNames.toString());
+//                System.out.println(newTotal.toString());
+
+                for(int h=0;h<newNames.size();h++){
+
+                    for(int n=0;n<names.size();n++){
+                        if(newNames.get(h).equals(names.get(n))){
+                            newTotal.set(h,totals.get(n)+newTotal.get(h));
+                            newAmount.set(h,newAmount.get(h)+1);
+
+                        }
+                    }
+
+                }
+
+
+            }
+            System.out.println("\nTotal number of items sold by item: ");
+            for(int k=0;k<newNames.size()-1;k++){
+                System.out.format("Name: %-21s Amount: %-5d Total: $%7.2f%n",newNames.get(k),newAmount.get(k),newTotal.get(k));
+            }
+
+        }
+        catch(SQLException e){
+            System.out.println("Error 11");
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+        }
+
+
+
+
+    }
 
 }
