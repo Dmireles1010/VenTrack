@@ -130,10 +130,11 @@ public class App {
 
         System.out.println("Total amount of money in all vending machine: "+total);
         System.out.println("Number of items sold in all vending machines: "+totalNumItems);
-
+        Database.showItemsStats(con,vmIDs);
 //        for(int x=0;x<2;x++){
 //            System.out.format("Vending Machine #%d: ",x);
 //            System.out.format("moneyhere");
+        System.out.println();
 //        }
 
     }
