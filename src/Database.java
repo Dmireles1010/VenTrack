@@ -72,7 +72,7 @@ public class Database {
      * @param itemID - String of the ID of item
      * @param vmID - Integer of the ID of the vending machine
      * @param date - the date it was purchase
-     * @param purchaseiD - the id of the purchase item
+     * @param purchaseID - the id of the purchase item
      * @param price - the price the item costed
      * **/
     public static void buyItem(Connection con,String itemID,Integer vmID,Date date,Integer purchaseID,Double price) {
@@ -560,16 +560,28 @@ public class Database {
      * **/
     public static ArrayList<Integer> getVMs(Connection con, String username){
         try{
-            String query = "SELECT * FROM USER WHERE USERNAME= ? ";
+            String query = "SELECT * FROM USER WHERE USER_NAME= ? ";
             PreparedStatement preparedStmt=con.prepareStatement(query);
             preparedStmt.setString(1,username);
 
 
             ResultSet rs= preparedStmt.executeQuery();
+            Integer company=0;
+
             ArrayList<Integer> vmIDs=new ArrayList<Integer>();
+            while(rs.next()){
+                company=rs.getInt("COMPANY_ID");
+            }
+
+            query = "SELECT * FROM COMPANY WHERE COMPANY_ID= ? ";
+            preparedStmt=con.prepareStatement(query);
+            preparedStmt.setInt(1,company);
+            rs= preparedStmt.executeQuery();
+
             while(rs.next()){
                 vmIDs.add(rs.getInt("VENDING_MACHINE_ID"));
             }
+
             return vmIDs;
 
         }
@@ -606,55 +618,6 @@ public class Database {
         return 0;
     }
 
-    public static void showItemsStats(Connection con, ArrayList<Integer> vmIDs){
 
-        try{
-
-            //loop through each vmID
-            ArrayList<String> names=new ArrayList<String>();
-            ArrayList<String> itemIDs=new ArrayList<String>();
-            ArrayList<Double> totals=new ArrayList<Double>();
-
-            for(int i=0;i<vmIDs.size();i++){
-                String query = "select * from PURCHASE where VENDING_MACHINE_ID=?";
-                PreparedStatement preparedStmt = con.prepareStatement(query);
-                preparedStmt.setInt(1,vmIDs.get(i));
-
-                ResultSet rs= preparedStmt.executeQuery();
-                while (rs.next())
-                {
-                    itemIDs.add(rs.getString("ITEM_ID"));
-                }
-
-                for(int x=0;x<itemIDs.size();x++){
-                    query = "select * from ITEM where VENDING_MACHINE_ID=? and ITEM_ID=?";
-                    preparedStmt = con.prepareStatement(query);
-                    preparedStmt.setInt(1,vmIDs.get(i));
-                    preparedStmt.setString(2, itemIDs.get(x));
-
-                    rs= preparedStmt.executeQuery();
-                }
-
-
-
-            }
-
-
-
-
-
-            // execute the java preparedstatement
-
-        }
-        catch(SQLException e){
-            System.out.println("Error 11");
-            System.out.println("SQLException: " + e.getMessage());
-            System.out.println("SQLState: " + e.getSQLState());
-        }
-
-
-
-
-    }
 
 }
