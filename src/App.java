@@ -1,3 +1,5 @@
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
@@ -88,4 +90,29 @@ public class App {
     private static void logout() {
         System.out.println("\t-   Logging Off   -");
     }
+    public static void viewOverallStats(ArrayList<Integer> vmIDs){
+        Connection con=Database.getRemoteConnection();
+        Double total=0.0;
+        Integer totalNumItems=0;
+
+//        ArrayList<Integer> vmIDs=new ArrayList<Integer>();
+
+        for(int i=0;i<vmIDs.size();i++){
+            Integer vmID=vmIDs.get(i);
+            total+=Database.getTotal(con,vmID);
+
+            totalNumItems+=Database.getTotalItems(con,vmID);
+        }
+
+        System.out.println("Total amount of money in all vending machine: "+total);
+        System.out.println("Number of items sold in all vending machines: "+totalNumItems);
+
+//        for(int x=0;x<2;x++){
+//            System.out.format("Vending Machine #%d: ",x);
+//            System.out.format("moneyhere");
+//        }
+
+    }
+
+
 }

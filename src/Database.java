@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Database {
@@ -20,9 +21,9 @@ public class Database {
 
         try {
 
-            System.out.println("Getting remote connection with connection string");
+//            System.out.println("Getting remote connection with connection string");
             Connection con = DriverManager.getConnection(dbURL1,userName,password);
-            System.out.println("Remote connection successfull\n");
+//            System.out.println("Remote connection successfull\n");
             return con;
         }
 
@@ -525,8 +526,135 @@ public class Database {
 			e.printStackTrace();
 		}
     }
-    
-    
-    
-    
+
+    /**
+     * Gets true or false if they own an account
+     * @param con - is the connection to Database
+     * @param username - String of the username account
+     * @return true or false if they own an account
+     * **/
+    public static boolean getBoolAccount(Connection con, String username, String password){
+        try{
+            String query = "SELECT * FROM USER WHERE USERNAME= ? and PASSWORD=? ";
+            PreparedStatement preparedStmt=con.prepareStatement(query);
+            preparedStmt.setString(1,username);
+            preparedStmt.setString(1,password);
+
+
+            ResultSet rs= preparedStmt.executeQuery();
+
+            return rs.next();
+        }
+        catch(SQLException e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+        }
+        return false;
+    }
+
+    /**
+     * Gets all the vmIDs that belong to a user
+     * @param con - is the connection to Database
+     * @param username - String of the username account
+     * @return an ArrayList of vmIDs a user has or returns null
+     * **/
+    public static ArrayList<Integer> getVMs(Connection con, String username){
+        try{
+            String query = "SELECT * FROM USER WHERE USERNAME= ? ";
+            PreparedStatement preparedStmt=con.prepareStatement(query);
+            preparedStmt.setString(1,username);
+
+
+            ResultSet rs= preparedStmt.executeQuery();
+            ArrayList<Integer> vmIDs=new ArrayList<Integer>();
+            while(rs.next()){
+                vmIDs.add(rs.getInt("VENDING_MACHINE_ID"));
+            }
+            return vmIDs;
+
+        }
+        catch(SQLException e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+        }
+        return null;
+    }
+
+    /**
+     * Gets the total number items sold from vending machine
+     * @param con - is the connection to Database
+     * @param vmID - Integer of the vending machine ID
+     * @return an Integer of the total number items sold
+     * **/
+    public static Integer getTotalItems(Connection con, Integer vmID){
+        try{
+            String query = "SELECT * FROM PURCHASE WHERE VENDING_MACHINE_ID= ? ";
+            PreparedStatement preparedStmt=con.prepareStatement(query);
+            preparedStmt.setInt(1,vmID);
+
+            ResultSet rs= preparedStmt.executeQuery();
+            Integer totalNumItems=0;
+            while(rs.next()){
+                totalNumItems+=1;
+            }
+            return totalNumItems;
+        }
+        catch(SQLException e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+        }
+        return 0;
+    }
+
+    public static void showItemsStats(Connection con, ArrayList<Integer> vmIDs){
+
+        try{
+
+            //loop through each vmID
+            ArrayList<String> names=new ArrayList<String>();
+            ArrayList<String> itemIDs=new ArrayList<String>();
+            ArrayList<Double> totals=new ArrayList<Double>();
+
+            for(int i=0;i<vmIDs.size();i++){
+                String query = "select * from PURCHASE where VENDING_MACHINE_ID=?";
+                PreparedStatement preparedStmt = con.prepareStatement(query);
+                preparedStmt.setInt(1,vmIDs.get(i));
+
+                ResultSet rs= preparedStmt.executeQuery();
+                while (rs.next())
+                {
+                    itemIDs.add(rs.getString("ITEM_ID"));
+                }
+
+                for(int x=0;x<itemIDs.size();x++){
+                    query = "select * from ITEM where VENDING_MACHINE_ID=? and ITEM_ID=?";
+                    preparedStmt = con.prepareStatement(query);
+                    preparedStmt.setInt(1,vmIDs.get(i));
+                    preparedStmt.setString(2, itemIDs.get(x));
+
+                    rs= preparedStmt.executeQuery();
+                }
+
+
+
+            }
+
+
+
+
+
+            // execute the java preparedstatement
+
+        }
+        catch(SQLException e){
+            System.out.println("Error 11");
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+        }
+
+
+
+
+    }
+
 }
