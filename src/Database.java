@@ -54,7 +54,7 @@ public class Database {
             //ID
             preparedStmt.setString(2,itemID);
             preparedStmt.setInt(3,vmID);
-            
+
             // execute the java preparedstatement
             preparedStmt.executeUpdate();
         }
