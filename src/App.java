@@ -47,7 +47,7 @@ public class App {
             System.out.print("Please enter your choice: ");
             int choice = input.nextInt();
 
-            //  Input Validation for menu choice
+            //  Input Validation for menu choices
             //  TODO:   Input Validation if user inputs string
             while (0 > choice || choice > 7) {
                 System.out.println("Please reenter your choice: ");
@@ -78,9 +78,9 @@ public class App {
                     System.out.print("Enter vending machine ID: ");
                     int vmID = input.nextInt();
                     System.out.print("Input start date 'yyyy-MM-dd': ");
-                    String startDate = input.nextLine();
+                    String startDate = input.next();
                     System.out.print("Input end date 'yyyy-MM-dd': ");
-                    String endDate = input.nextLine();
+                    String endDate = input.next();
                     Database.showItemsByDate(con, vmID, startDate, endDate);
                     break;
                 case 6:
