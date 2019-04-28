@@ -3,6 +3,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Database {
 
@@ -180,12 +181,16 @@ public class Database {
             preparedStmt.setString(1,itemID);
             //ID
             preparedStmt.setInt(2,vmID);
+            preparedStmt.execute();
 
             System.out.println("Updated ID:"+itemID+",Quantitiy:"+getAmount(con,itemID,vmID));
 
         }
         catch(SQLException e){
-            System.out.println("Error 3");
+            System.out.println("Error 6");
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+
         }
     }
 
@@ -211,6 +216,7 @@ public class Database {
             preparedStmt.setDouble(4,price);
             preparedStmt.setInt(5,quant);
             preparedStmt.setInt(6,vmID);
+            preparedStmt.executeUpdate();
             System.out.println("Added ID:"+itemID+",name:"+name+", to vendingmachineID:"+vmID);
 
         }
@@ -230,17 +236,22 @@ public class Database {
             String query = "update ITEM set PRICE = ? where ITEM_ID = ? AND VENDING_MACHINE_ID=?";
             PreparedStatement preparedStmt = con.prepareStatement(query);
 
+
             preparedStmt.setDouble   (1,price);
             //ID
             preparedStmt.setString(2,itemID);
             preparedStmt.setInt(3,vmID);
-
+            preparedStmt.executeUpdate();
             System.out.println("Updated ID:"+itemID+",Quantitiy:"+getAmount(con,itemID,vmID));
 
         }
         catch(SQLException e){
-            System.out.println("Error 5");
+            System.out.println("Error 6");
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+
         }
+
     }
     /**
      * Updates the quantity of an item 
@@ -270,6 +281,80 @@ public class Database {
             System.out.println("SQLState: " + e.getSQLState());
         }
     }
+
+    /**
+     * Modifies an item in the vending machine
+     */
+    public static void modifyItems() {
+        try {
+            Connection con = Database.getRemoteConnection();
+            Scanner input = new Scanner(System.in);
+
+            String query = "update ITEM set PRICE = ? where ITEM_ID = ? AND VENDING_MACHINE_ID=?";
+            System.out.print("Enter Item ID: ");
+            String itemID = input.next();
+            System.out.print("Enter vending machine ID:");
+            int vmID = input.nextInt();
+            String check = "SELECT * FROM ITEM WHERE ITEM_ID = ? AND VENDING_MACHINE_ID = ?";
+            PreparedStatement ps = con.prepareStatement(check);
+            ps.setString(1, itemID);
+            ps .setInt(2, vmID);
+            ResultSet rs = ps .executeQuery();
+            while (!rs.next()){
+                System.out.print("Enter Item ID again: ");
+                itemID = input.next();
+                System.out.print("Enter vending machine ID again:");
+                vmID = input.nextInt();
+                check = "SELECT * FROM ITEM WHERE ITEM_ID = ? AND VENDING_MACHINE_ID = ?";
+                ps  = con.prepareStatement(check);
+                ps .setString(1, itemID);
+                ps .setInt(2, vmID);
+                rs = ps .executeQuery();
+            }
+            System.out.print("Enter price: ");
+            double price = input.nextDouble();
+
+            ps = con.prepareStatement(query);
+            ps.setDouble(1, price);
+            ps.setString(2, itemID);
+            ps.setInt(3, vmID);
+            ps.executeUpdate();
+
+            query = "update ITEM set NAME = ? where ITEM_ID = ? AND VENDING_MACHINE_ID=?";
+            System.out.print("Enter new name: ");
+            String name = input.next();
+            ps = con.prepareStatement(query);
+            ps.setString(1, name);
+            ps.setString(2, itemID);
+            ps.setInt(3, vmID);
+            ps.executeUpdate();
+
+            query = "update ITEM set PRODUCTION_COMPANY = ? where ITEM_ID = ? AND VENDING_MACHINE_ID=?";
+            System.out.print("Enter new production company: ");
+            String pCompany = input.next();
+            ps = con.prepareStatement(query);
+            ps.setString(1, pCompany);
+            ps.setString(2, itemID);
+            ps.setInt(3, vmID);
+            ps.executeUpdate();
+
+            query = "update ITEM set QUANTITY = ? where ITEM_ID = ? AND VENDING_MACHINE_ID=?";
+            System.out.println("Enter new quantity: ");
+            int quantity = input.nextInt();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, quantity);
+            ps.setString(2, itemID);
+            ps.setInt(3, vmID);
+            ps.executeUpdate();
+
+            System.out.println("Update Done");
+
+        }
+        catch (SQLException e){
+            System.out.println("ERROR");
+        }
+    }
+
     /**
      * @return the price of an item
      * @param con - is the connection to Database

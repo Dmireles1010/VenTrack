@@ -2,12 +2,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
     public static final Scanner input = new Scanner(System.in);
-
+    final static String DATE_FORMAT = "yyyy-MM-dd";
     public static void main(String[] args) {
 
         Connection con = Database.getRemoteConnection();
@@ -25,7 +28,6 @@ public class App {
             password = input.nextLine();
             accept = Database.getBoolAccount(con, username, password);
         }
-        System.out.println("Login successful!\n");
         login();
         menu();
 
@@ -72,17 +74,32 @@ public class App {
                     break;
                 case 4:
                     //  TODO:   Modify specific Vending Machine Items
+                    Database.modifyItems();
                     break;
+
                 case 5:
                     //  TODO:   View past Stats from Specific Vending Machine
                     System.out.print("Enter vending machine ID: ");
                     int vmID = input.nextInt();
                     System.out.print("Input start date 'yyyy-MM-dd': ");
                     String startDate = input.next();
+                    boolean s = isDateValid(startDate);
+                    while (!s){
+                        System.out.print("Please enter start date again 'yyyy-MM-dd': ");
+                        startDate = input.next();
+                        s = isDateValid(startDate);
+                    }
                     System.out.print("Input end date 'yyyy-MM-dd': ");
                     String endDate = input.next();
+                    s = isDateValid(endDate);
+                    while (!s){
+                        System.out.print("Please enter end date again 'yyyy-MM-dd': ");
+                        startDate = input.next();
+                        s = isDateValid(startDate);
+                    }
                     Database.showItemsByDate(con, vmID, startDate, endDate);
                     break;
+
                 case 6:
                     //  Exit the program
                     keepGoing = false;
@@ -113,6 +130,19 @@ public class App {
     }
     private static void login() {
         System.out.println("\t-   Logging In   -\n");
+    }
+
+
+    public static boolean isDateValid(String date)
+    {
+        try {
+            DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+            df.setLenient(false);
+            df.parse(date);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
     }
     public static void viewOverallStats(ArrayList<Integer> vmIDs){
         Connection con=Database.getRemoteConnection();
