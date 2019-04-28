@@ -17,10 +17,11 @@ public class VendingMachine {
             con=Database.getRemoteConnection();
             vmID=1;
 
+            Database.showItems(con,vmID);
+
             System.out.print("Enter the code correlating to the item you want: ");
             String choice = input.next();
 
-//            Item item = null;
             String itemID=null;
             String inputValidate = "False";
  
@@ -68,9 +69,6 @@ public class VendingMachine {
             else {
                 System.out.println(itemName + " dispended.");
                 Database.updateAmount(con, itemID, vmID);
-//                item.quantity = item.quantity-1;
-//                itemMap.replace(choice, item);
-//                total += cost;
                 //Update total in vending machine
                 Database.incTotal(con, vmID, cost);
                 //Add item to purchase history
@@ -78,51 +76,12 @@ public class VendingMachine {
                 Database.buyItem( con, itemID, vmID, new java.sql.Date(date.getTime()),Database.getRecentPurchase(con),Database.getPrice( con, itemID, vmID));
                 
             }
-//            printItem(itemMap);
             con.close();
         }
         catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
         }
-
-
-
-    }
-
-    private static void addItem(Map<String,Item> itemMap) {
-        Item item1 = new Item("Candy",2.50,2);
-        Item item2 = new Item("Chips",3.00,6);
-        Item item3 = new Item("Drink",1.00,5);
-        Item item4 = new Item("Apple",2.00,7);
-        Item item5 = new Item("Orange",2.00,3);
-
-        itemMap.put("A1",item1);
-        itemMap.put("A2",item2);
-        itemMap.put("A3",item3);
-        itemMap.put("A4",item4);
-        itemMap.put("A5",item5);
-    }
-
-    private static void printItem(Map<String, Item> itemMap) {
-        System.out.println("-------------------------------Item List-------------------------------");
-
-        System.out.print(String.format("%-20s", "Key"));
-        System.out.print(String.format("%-20s", "Name"));
-        System.out.print(String.format("%-20s", "Price"));
-        System.out.print(String.format("%-20s", "Quantity"));
-        System.out.println();
-
-        for(Map.Entry<String, Item> entry:itemMap.entrySet()) {
-            String key = entry.getKey();
-            Item item = entry.getValue();
-            System.out.print(String.format("%-20s", key));
-            System.out.print(String.format("%-20s", item.itemName));
-            System.out.print(String.format("%-20s", item.price));
-            System.out.print(String.format("%-20s", item.quantity));
-            System.out.println();
-        }
-        System.out.println("----------------------------------------------------------------------");
     }
 
 }

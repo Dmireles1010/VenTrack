@@ -54,9 +54,7 @@ public class Database {
             //ID
             preparedStmt.setString(2,itemID);
             preparedStmt.setInt(3,vmID);
-
-            System.out.println("Updated ID:"+itemID+",Quantitiy:"+originalQuant);
-
+            
             // execute the java preparedstatement
             preparedStmt.executeUpdate();
         }
