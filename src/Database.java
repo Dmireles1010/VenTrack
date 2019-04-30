@@ -944,4 +944,54 @@ public class Database {
             System.out.println("ERROR");
         }
     }
+    
+    public static Customer getAccountInfo(Connection con,String username) {
+        try{
+            String query = "SELECT * FROM USER WHERE USER_NAME= ? ";
+            PreparedStatement preparedStmt=con.prepareStatement(query);
+            preparedStmt.setString(1,username);
+
+            ResultSet rs= preparedStmt.executeQuery();
+            String companyID=null;
+            while(rs.next()){
+                companyID=rs.getString("COMPANY_ID");
+            }
+            
+            
+            
+            String query1 = "SELECT * FROM COMPANY WHERE COMPANY_ID= ? ";
+            PreparedStatement preparedStmt1=con.prepareStatement(query);
+            preparedStmt1.setString(1,companyID);
+            ResultSet rs1= preparedStmt.executeQuery();
+            String companyName=null;
+            while(rs.next()){
+                companyName=rs.getString("COMPANY_NAME");
+            }
+            
+            ArrayList<Integer> vmIDs=getVMs(con,username);
+            ArrayList<String> addresses=new ArrayList<String>();
+            for(int i=0;i<vmIDs.size();i++) {
+                String query2 = "SELECT * FROM VENDING_MACHINE WHERE VENDING_MACHINE= ? ";
+                PreparedStatement preparedStmt2=con.prepareStatement(query);
+                preparedStmt1.setString(1,companyID);
+                ResultSet rs2= preparedStmt.executeQuery();
+
+                while(rs.next()){
+                	addresses.add(rs.getString("LOCATION"));
+                }
+            }
+            
+            Customer customer=new Customer(username,addresses);
+            return customer;
+            
+            
+            
+            
+        }
+        catch(SQLException e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+        }
+        return null;
+    }
 }

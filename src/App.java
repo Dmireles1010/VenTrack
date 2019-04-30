@@ -13,6 +13,9 @@ public class App {
     public static Connection con = Database.getRemoteConnection();
     public static User currentUser=new User();
     final static String DATE_FORMAT = "yyyy-MM-dd";
+    
+    
+    public static Customer customer=new Customer();
     public static void main(String[] args) {
 
         Connection con = Database.getRemoteConnection();
@@ -23,6 +26,12 @@ public class App {
         String password = input.nextLine();
         boolean accept = Database.getBoolAccount(con, username, password);
         currentUser.setUserName(username);
+        
+        //Set customer info
+        //****************TRY System.out.println(customer.getInfo())  to see the users info
+        customer=Database.getAccountInfo(con, username);
+        
+        
         while (!accept){
             System.out.print("\nERROR: Your username and / or password is incorrect\n" +
                             "Enter your username: ");
