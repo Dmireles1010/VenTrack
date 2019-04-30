@@ -120,13 +120,20 @@ public class App {
                     break;
                 case 4:
                     //Modify specific Vending Machine Items
-                    Database.modifyItems(con);
+                	vmIDs=Database.getVMs(con,currentUser.getUserName());
+                    Database.modifyItems(con,vmIDs);
                     break;
 
                 case 5:
                     //View past Stats from Specific Vending Machine
+                	vmIDs=Database.getVMs(con,currentUser.getUserName());
                     System.out.print("Enter vending machine ID: ");
                     int vmID = input.nextInt();
+                    while(!vmIDs.contains(vmID)){
+                        System.out.println("Invalid Vending Machine number... Enter a valid vending machine ID:");
+                        vmID = input.nextInt();
+                    }
+                    
                     System.out.print("Input start date 'yyyy-MM-dd': ");
                     String startDate = input.next();
                     boolean s = isDateValid(startDate);
@@ -143,6 +150,7 @@ public class App {
                         startDate = input.next();
                         s = isDateValid(startDate);
                     }
+                    
                     Database.showItemsByDate(con, vmID, startDate, endDate);
                     break;
 
