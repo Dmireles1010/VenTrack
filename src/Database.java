@@ -985,8 +985,6 @@ public class Database {
             return customer;
             
             
-            
-            
         }
         catch(SQLException e){
         	System.out.println("error here");

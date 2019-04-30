@@ -74,7 +74,6 @@ public class App {
             int choice = input.nextInt();
 
             //  Input Validation for menu choices
-            //  TODO:   Input Validation if user inputs string
             while (0 > choice || choice > 7) {
                 System.out.println("Please reenter your choice: ");
                 choice = input.nextInt();
@@ -85,11 +84,11 @@ public class App {
                 // Menu choices
                 case 1:
                     System.out.println("Displaying overall Vending Machine Stats");
-                    //  TODO:   View overall Vending Machine Stats
+                    //View overall Vending Machine Stats
                     viewOverallStats(vmIDs);
                     break;
                 case 2:
-                    //  TODO:   View Statistics for a specific Vending Machine
+                    //View Statistics for a specific Vending Machine
                     System.out.println("Your Vending Machines IDs:");
                     for(Integer vm:vmIDs){
                         System.out.println("Vending Machine ID: "+vm);
@@ -103,7 +102,7 @@ public class App {
                     Database.showItemsStatsSpecific(con,id);
                     break;
                 case 3:
-                    //  TODO:   List Number of Items for specific Vending Machine
+                    //List Number of Items for specific Vending Machine
 
                     System.out.println("Your Vending Machines IDs:");
                     for(Integer vm:vmIDs){
@@ -120,12 +119,12 @@ public class App {
                     Database.showItemsSpecific(con,id);
                     break;
                 case 4:
-                    //  TODO:   Modify specific Vending Machine Items
+                    //Modify specific Vending Machine Items
                     Database.modifyItems(con);
                     break;
 
                 case 5:
-                    //  TODO:   View past Stats from Specific Vending Machine
+                    //View past Stats from Specific Vending Machine
                     System.out.print("Enter vending machine ID: ");
                     int vmID = input.nextInt();
                     System.out.print("Input start date 'yyyy-MM-dd': ");
@@ -158,19 +157,6 @@ public class App {
         logout();
     }
 
-    private static void vending_machine_menu() {
-        System.out.println("Select which Vending Machine to connect to");
-        System.out.println("print list of vending machine");
-        System.out.print("Please enter your choice: ");
-        int vm_choice = input.nextInt();
-
-        //  Input Validation for vending machine menu
-        //  TODO:   Input Validation if user inputs string
-
-        //System.out.println("\t-   CONNECTED TO VENDING MACHINE " + machine_id + "   -");
-
-        //return vm;
-    }
 
     private static void logout() {
         System.out.println("\t-   Logging Off   -");
@@ -194,8 +180,6 @@ public class App {
     public static void viewOverallStats(ArrayList<Integer> vmIDs){
         Double total=0.0;
         Integer totalNumItems=0;
-
-//        ArrayList<Integer> vmIDs=new ArrayList<Integer>();
 
         for(int i=0;i<vmIDs.size();i++){
             Integer vmID=vmIDs.get(i);

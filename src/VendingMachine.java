@@ -12,13 +12,11 @@ public class VendingMachine {
     public static void main(String[] args) {
         Connection con=null;
         //Connect to database:
-        //TODO loop
         try {
             con=Database.getRemoteConnection();
 
             System.out.print("Enter which Vending Machine you are at: ");
             int vmID = input.nextInt();
-            //TODO input validate
 
             Database.showItems(con,vmID);
 
@@ -63,8 +61,6 @@ public class VendingMachine {
                 }
             }
 
-            double total = 0.0;   //get total from database
-            total=Database.getTotal( con, vmID);
             if(money < cost) {
                 System.out.println("NOT ENOUGH MONEY");
                 System.out.println("You only have $" + money);
