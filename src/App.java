@@ -16,6 +16,11 @@ public class App {
     
     
     public static Customer customer=new Customer();
+    
+    public static ArrayList<Integer> vmIDs=null;
+    
+    
+    
     public static void main(String[] args) {
 
         Connection con = Database.getRemoteConnection();
@@ -25,12 +30,7 @@ public class App {
         System.out.print("Password: ");
         String password = input.nextLine();
         boolean accept = Database.getBoolAccount(con, username, password);
-        currentUser.setUserName(username);
-        
-        //Set customer info
-        //****************TRY System.out.println(customer.getInfo())  to see the users info
-        customer=Database.getAccountInfo(con, username);
-        
+
         
         while (!accept){
             System.out.print("\nERROR: Your username and / or password is incorrect\n" +
@@ -41,6 +41,17 @@ public class App {
             accept = Database.getBoolAccount(con, username, password);
             currentUser.setUserName(username);
         }
+        
+        currentUser.setUserName(username);
+        vmIDs=Database.getVMs(con,currentUser.getUserName());
+        //Set customer info
+        //****************TRY System.out.println(customer.getInfo())  to see the users info
+        customer=Database.getAccountInfo(con, username);
+        System.out.println("\nWELCOME TO VENTRACK\n");
+        customer.getInfo();
+        System.out.println("Your Vending Machine IDs:"+vmIDs.toString());
+        System.out.println();
+        
         login();
         menu();
 
@@ -68,7 +79,7 @@ public class App {
                 System.out.println("Please reenter your choice: ");
                 choice = input.nextInt();
             }
-            ArrayList<Integer> vmIDs=Database.getVMs(con,currentUser.getUserName());
+//            ArrayList<Integer> vmIDs=Database.getVMs(con,currentUser.getUserName());
             Integer id=null;
             switch (choice) {
                 // Menu choices

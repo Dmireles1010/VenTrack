@@ -960,24 +960,24 @@ public class Database {
             
             
             String query1 = "SELECT * FROM COMPANY WHERE COMPANY_ID= ? ";
-            PreparedStatement preparedStmt1=con.prepareStatement(query);
+            PreparedStatement preparedStmt1=con.prepareStatement(query1);
             preparedStmt1.setString(1,companyID);
-            ResultSet rs1= preparedStmt.executeQuery();
+            ResultSet rs1= preparedStmt1.executeQuery();
             String companyName=null;
-            while(rs.next()){
-                companyName=rs.getString("COMPANY_NAME");
+            while(rs1.next()){
+                companyName=rs1.getString("COMPANY_NAME");
             }
             
             ArrayList<Integer> vmIDs=getVMs(con,username);
             ArrayList<String> addresses=new ArrayList<String>();
             for(int i=0;i<vmIDs.size();i++) {
-                String query2 = "SELECT * FROM VENDING_MACHINE WHERE VENDING_MACHINE= ? ";
-                PreparedStatement preparedStmt2=con.prepareStatement(query);
-                preparedStmt1.setString(1,companyID);
-                ResultSet rs2= preparedStmt.executeQuery();
+                String query2 = "SELECT * FROM VENDING_MACHINE WHERE VENDING_MACHINE_ID= ? ";
+                PreparedStatement preparedStmt2=con.prepareStatement(query2);
+                preparedStmt2.setInt(1,vmIDs.get(i));
+                ResultSet rs2= preparedStmt2.executeQuery();
 
-                while(rs.next()){
-                	addresses.add(rs.getString("LOCATION"));
+                while(rs2.next()){
+                	addresses.add(rs2.getString("LOCATION"));
                 }
             }
             
@@ -989,6 +989,7 @@ public class Database {
             
         }
         catch(SQLException e){
+        	System.out.println("error here");
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
         }
