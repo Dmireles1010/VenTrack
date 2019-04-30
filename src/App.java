@@ -25,8 +25,11 @@ public class App {
 
         Connection con = Database.getRemoteConnection();
         System.out.println("Please login with your credentials to proceed");
-        System.out.print("Enter your username: ");
+        System.out.print("Enter your username (or enter -1 to exit): ");
         String username = input.nextLine();
+        if (username.equals("-1")){
+            System.exit(0);
+        }
         System.out.print("Password: ");
         String password = input.nextLine();
         boolean accept = Database.getBoolAccount(con, username, password);
