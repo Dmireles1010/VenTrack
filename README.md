@@ -7,9 +7,9 @@ Our system is a vending machine tracker. We can log into the system and use it t
 Some of the features included in our program are:
 - Viewing stats of individual vending machines
 - Viewing overall vending machine stats
-- listing number of items sold from vending machine
-- modify vending machine items
-- view past statistics
+- Listing number of items sold from vending machine
+- Modifying vending machine items
+- Viewing past statistics
 
 ## Built With
 - Java
