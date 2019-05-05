@@ -1,12 +1,28 @@
+import java.util.ArrayList;
+
 public class Customer {
 
     private String customerName;
-    private String companyAddress;
-    private String companyPhone;
+    private ArrayList<String> companyAddress;
 
-    public Customer(String customerName, String companyAddress, String companyPhone) {
+    public Customer() {
+    	
+    }
+    public Customer(String customerName, ArrayList<String> companyAddress) {
         this.customerName = customerName;
         this.companyAddress = companyAddress;
-        this.companyPhone = companyPhone;
+    }
+    public Customer(String customerName, ArrayList<String> companyAddress, String companyPhone) {
+        this.customerName = customerName;
+        this.companyAddress = companyAddress;
+    }
+    
+    public void setCustomer(String customerName,String companyAddress,String companyPhone) {
+    	
+    }
+    
+    public void getInfo() {
+    	System.out.println("Customer Name: "+customerName);
+    	System.out.println("Your Vending Machine Addresses: "+companyAddress.toString());
     }
 }
