@@ -17,7 +17,7 @@ Some of the features included in our program are:
 - Amazon Web Services
 
 ## Authors
-- David Mireles (Java (front and back-end))
+- David Mireles (SQL, Java (front and back-end))
 - Brian Nguyen (SQL, Java (front and back-end))
 - David Nguyen (Java, diagrams, logics provider)
 - Johnson Nguyen (Java (front-end), bug reporting)
